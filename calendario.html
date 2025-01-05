@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Escritura Creativa 2025</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f5f0;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+        }
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5em;
+            color: #4a4a4a;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 900px;
+            margin: 20px;
+        }
+        .day {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border: 2px solid #d1c4b5;
+            border-radius: 10px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #4a4a4a;
+            text-align: center;
+        }
+        .day.discovered {
+            background-color: #e8f5e9;
+            border-color: #81c784;
+            color: #2e7d32;
+            cursor: default;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .calendar-container {
+            background: #fff;
+            border: 5px solid #d1c4b5;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Escritura Creativa 2025</h1>
+    <div class="calendar-container">
+        <div class="calendar" id="calendar"></div>
+    </div>
+
+    <div class="modal" id="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <p id="challengeText"></p>
+    </div>
+
+    <script>
+        // Función para generar las fechas del año 2025
+        function generateDates(year) {
+            const dates = [];
+            const startDate = new Date(`${year}-01-01`);
+            for (let i = 0; i < 365; i++) {
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + i);
+                const options = { weekday: 'short', day: 'numeric', month: 'short' };
+                dates.push(date.toLocaleDateString('es-ES', options));
+            }
+            return dates;
+        }
+
+        const writingChallenges = [
+            "Describe un paisaje imaginario que mezcle elementos de invierno y verano.",
+            "Escribe una carta desde el futuro dirigida a tu " + "yo" + " del presente.",
+            "Crea una historia que ocurra dentro de un cuadro famoso.",
+            "Relata un día común desde el punto de vista de tu mascota.",
+            "Imagina que un objeto cotidiano tiene poderes mágicos. Cuenta su historia.",
+            "Escribe un diálogo entre dos personajes que no se entienden por hablar idiomas distintos.",
+            "Describe cómo sería vivir en un mundo sin electricidad.",
+            "Narra una aventura que comience con una nota encontrada en una botella.",
+            "Cuenta un evento histórico desde el punto de vista de un observador casual.",
+            "Crea una lista de deseos para un personaje ficticio.",
+            "Imagina una conversación entre tu personaje favorito y tú.",
+            "Escribe un relato que tenga lugar completamente en un sueño.",
+            "Narra un misterio que ocurre en una biblioteca nocturna.",
+            "Describe una ciudad futurista desde los ojos de un turista.",
+            "Escribe sobre un objeto heredado que guarda un secreto.",
+            "Crea una historia que gire en torno a un sonido inexplicable.",
+            "Relata una cena familiar desde la perspectiva de la comida servida.",
+            "Imagina que encuentras un diario que revela verdades sorprendentes sobre tu familia.",
+            "Escribe un relato ambientado en una fiesta de máscaras donde nadie puede hablar.",
+            "Describe un encuentro inesperado en un tren.",
+            // Agrega aquí 345 retos adicionales únicos para completar el calendario
+        ];
+
+        const dates2025 = generateDates(2025);
+
+        // Crear calendario
+        const calendar = document.getElementById('calendar');
+        dates2025.forEach((date, i) => {
+            const day = document.createElement('div');
+            day.classList.add('day');
+            day.textContent = date;
+            day.dataset.index = i; // Índice para acceder al reto
+            calendar.appendChild(day);
+        });
+
+        // Modal para mostrar el reto
+        const modal = document.getElementById('modal');
+        const challengeText = document.getElementById('challengeText');
+        const closeModal = document.getElementById('closeModal');
+
+        // Mostrar reto al hacer clic en un día
+        calendar.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('day') && !target.classList.contains('discovered')) {
+                const index = target.dataset.index;
+                challengeText.textContent = writingChallenges[index];
+                modal.classList.add('active');
+                target.classList.add('discovered');
+            }
+        });
+
+        // Cerrar modal
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Cerrar modal al hacer clic fuera del contenido
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
